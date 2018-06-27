@@ -1,0 +1,103 @@
+Declarations
+------------
+Constants: let
+           let someThing = 10
+Variables: var
+           var someThing = 0
+
+
+Types
+-----
+String; Int; Double; Bool
+
+
+Type Annotation
+---------------
+var welcomeMessage: String
+var aVariable, bVariable, cVariable: String
+let annotatedDouble: Double = 20
+
+
+Type Inference
+--------------
+- anything within double quotes is typed as a String
+- whole numbers are typed as Int
+- decimal numbers are typed as Double
+
+
+functions
+---------
+declaration:  func hello(name: String) { }
+	      func hello(firstName: String, lastName: String) { }
+	      func spaceAvailable(eachDuration: Int, numberVideos: Int) -> String { }
+
+calls:  hello(name: "Maria")
+	hello(firstName: "John", lastName: "Candy")
+
+
+print
+-----
+print("This is a \(testVariable)")
+
+
+comments
+--------
+// A single line comment
+/* A multi-
+   line comment */
+
+
+binary operators
+----------------
++
+
+
+special operators
+-----------------
+score += 2 is the same as score = score + 2
+== // comparison operator
+!= // not equal comparison operator
+%  // 5 % 2 evaluates to 1
+
+
+special characters
+------------------
+_ // underscore instead of argument label in function declaration allows you to call function
+  // without an argument label
+  // func printHelloTo(_ name: String) {
+  //      print("Hello " + name)
+  // }
+  // printHelloTo("Maya")
+
+
+methods - method is a function built in to each instance of a type
+-------
+hasPrefix() // does a string begin with another string?
+func hasPrefix(_ prefix: String) -> Bool
+let introduction = "It was a dark and stormy night"
+introduction.hasPrefix("It was") // will resolve to true
+
+lowercased() // change string to all lower-case
+let question = "UPPERCASE"
+let lowerQuestion = question.lowercased()
+
+removeAll()
+var magic = "Now you see it"
+magic.removeAll() // the string "magic" is now empty, null value
+
+count
+"abcd".count // resolves to 4
+
+
+properties - property is a constant or variable built in to each instance of a type, can't pass arguments to a property
+----------
+var isEmpty: Bool { get } // declare property; note "{ get }" means you can get the value but not set it
+let something = "It was the best of times"
+something.isEmpty // resolves to false
+
+
+Xcode
+-----
+Option-<click> on a type, method or property to pull up documentation
+View > Utilities > Show Quick Help Inspector from the menu
+Window > “Documentation and API Reference”
