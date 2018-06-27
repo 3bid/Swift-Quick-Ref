@@ -9,9 +9,10 @@ Variables: var
 Types
 -----
 String; Int; Double; Bool
+Date() (let today=Date() - part of framework Foundation so must "import Foundation")
 
 
-Type Annotation
+Type Annotation (for when you don't want to rely on type inference)
 ---------------
 var welcomeMessage: String
 var aVariable, bVariable, cVariable: String
@@ -27,7 +28,7 @@ Type Inference
 
 functions
 ---------
-declaration:  func hello(name: String) { }
+declaration:  func hello(name: String) { } // "name" is called a parameter
 	      func hello(firstName: String, lastName: String) { }
 	      func spaceAvailable(eachDuration: Int, numberVideos: Int) -> String { }
 
@@ -98,6 +99,6 @@ something.isEmpty // resolves to false
 
 Xcode
 -----
-Option-<click> on a type, method or property to pull up documentation
+Option-<click> on a variable, type, method or property to pull up documentation
 View > Utilities > Show Quick Help Inspector from the menu
 Window > “Documentation and API Reference”
