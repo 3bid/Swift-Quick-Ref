@@ -28,12 +28,28 @@ Type Inference
 
 functions
 ---------
-declaration:  func hello(name: String) { } // "name" is called a parameter
+declaration:  func hello(name: String) { } // "name" is called a parameter name
 	      func hello(firstName: String, lastName: String) { }
 	      func spaceAvailable(eachDuration: Int, numberVideos: Int) -> String { }
 
-calls:  hello(name: "Maria")
+calls:  hello(name: "Maria") // "name" in this function call is called argument label
 	hello(firstName: "John", lastName: "Candy")
+
+Parameter names must match the argument labels.  You can create multiple parameter names to
+make you code more readable (note the 2 parameter names in the function declaration):
+
+   func printHello(to name: String) {
+	print("Hello " + name)
+   }
+   printHello(to: "Chris")
+
+Underscore instead of argument label in function declaration allows you to call function
+without an argument label:
+
+   func printHelloTo(_ name: String) {
+	print("Hello " + name)
+   }
+   printHelloTo("Maya")
 
 
 print
@@ -58,17 +74,11 @@ special operators
 score += 2 is the same as score = score + 2
 == // comparison operator
 != // not equal comparison operator
-%  // 5 % 2 evaluates to 1
+%  // remainder operator - 5 % 2 evaluates to 1
 
 
 special characters
 ------------------
-_ // underscore instead of argument label in function declaration allows you to call function
-  // without an argument label
-  // func printHelloTo(_ name: String) {
-  //      print("Hello " + name)
-  // }
-  // printHelloTo("Maya")
 
 
 methods - method is a function built in to each instance of a type
