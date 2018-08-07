@@ -1,15 +1,18 @@
 Declarations
 ------------
 Constants: let
-           let someThing = 10
+           let someThing = 10 //value of someThing cannot be changed, is "immutable"
 Variables: var
-           var someThing = 0
+           var someThing = 0 //value of someThing may be changed, is "mutable"
 
 
 Types
 -----
 String; Int; Double; Bool
 Date() (let today=Date() - part of framework Foundation so must "import Foundation")
+       Date() is known as an initializer - you use an initializer to create a new instance
+       of a particular type - every type as at least one initializer
+Every type has an API.
 
 
 Type Annotation (for when you don't want to rely on type inference)
@@ -52,9 +55,146 @@ without an argument label:
    printHelloTo("Maya")
 
 
+Initializers
+------------
+let rightNow = Date() - value: current month, day, year, "at", time
+let emptyString = String() - value: ""
+let falseBool = Bool() - value: false
+let zero = Int() - value: 0
+let oneHourLater = Date(timeIntervalSinceNow: 3600) - value: a date that is the # of seconds
+                                                             in the future from current time
+
+
+Instance Methods // method is a function built in to each instance of a type
+----------------
+Instance Methods of functions cannot be called without an instance and cannot be used on an instance
+of the wrong type.
+
+String:
+   let introduction = "It was a dark and stormy night"
+   func hasPrefix(_ prefix: String) -> Bool // does a string begin with another string?
+   introduction.hasPrefix("It was") // value: true; known as calling a method on the instance - 
+                                       hasPrefix() was called on introduction
+
+   hasSuffix(suffix: String)
+   removeAll() //empties the string
+   lowercased() //converts all to lower case
+
+UIView:
+   myColorView.backgroundColor = .black // paint background color black
+
+UISwitch:
+   @IBAction func switchChanged(_ sender: UISwitch) {
+		if sender.isOn {
+			colorView.backgroundColor = .red
+		} else {
+			colorView.backgroundColor = .black
+		}
+   }
+   
+
+Properties // property is a constant or variable built in to each instance of a type, can't pass arguments to a property
+----------
+Each instance of a variable has information associated with it, known as a property. Cannot be used
+without an instance and cannot be used on an instance of the wrong type. You can't pass arguments to
+a property. Properties are for getting values from an instance, or setting values.
+
+String:
+   var isEmpty: Bool { get } //does the string contain any characters; "get" means it's a read-
+                               only property
+   let something = "It was the best of times"
+   something.isEmpty //value: false
+
+   count // returns count of number of characters in string
+   append // add string to end of string variable or element in string array
+   list.insert("Kumquat", at: 0) // add string into specific position in array
+   numbers.remove(at: 2) // remove element 2 of array
+   numbers.removeFirst() // remove first element of array
+   numbers.removeLast()
+   numbers.removeAll()
+   contains // does the string exist within another string; must import Foundation framework
+
+Int:
+   count // returns count of elements in array; this is a calculated property
+
+
 print
 -----
 print("This is a \(testVariable)")
+
+
+arrays
+------
+Once a mutable array is declared, it can only hold values of the types in the original declaration
+
+var list = [String]() // declare mutable empty array that will hold strings
+list.append("Banana") // add item to array
+
+var flavors = ["Chocolate", "Vanilla", "Strawberry", "Pistachio", "Rocky Road"]
+flavors[0] = "Fudge Ripple" // replace Chocolate with Fudge Ripple in array flavors, you can't add or remove
+                            // elements from an array using subscripts
+
+
+struct
+------
+struct Song {
+    let title: String
+    let artist: String
+    let duration: Int
+}
+let song = Song(title: "No, no, no", artist: "Fizz", duration: 150) // song is an instance of Song
+song.title
+song.artist
+song.duration
+
+struct Song {
+    let title: String
+    let artist: String
+    let duration: Int
+    var rating: Int // mutable property
+}
+var song = Song(title: "No, no, no", artist: "Fizz", duration: 150, rating: 0)
+song.rating = 4
+
+struct Song {
+    let title: String
+    let artist: String
+    let duration: Int
+    
+    var formattedDuration: String { // calcualted property
+        let minutes = duration / 60
+        // The modulus (%) operator gives the remainder
+        let seconds = duration % 60
+        return "\(minutes)m \(seconds)s"
+    }
+}
+let song = Song(title: "No, no, no", artist: "Fizz", duration: 150)
+song.formattedDuration // value: 2m 30s
+
+struct Rectangle { // struct with instance method
+    let width: Int
+    let height: Int
+    
+    func biggerThan(_ rectangle: Rectangle) -> Bool {
+        let areaOne = width * height
+        let areaTwo = rectangle.width * rectangle.height
+        return areaOne > areaTwo
+    }
+}
+let rectangle = Rectangle(width: 10, height: 10)
+let otherRectangle = Rectangle(width: 10, height: 20)
+rectangle.biggerThan(otherRectangle) // value: false
+otherRectangle.biggerThan(rectangle) // value: true
+
+
+loops
+-----
+for...in
+let friends = ["Name", "Name2", "Name3", "Name4", "Name5"]
+for friend in friends {
+    print(friend)
+}
+print("Done, all friends have been printed.")
 
 
 comments
@@ -71,7 +211,7 @@ binary operators
 
 special operators
 -----------------
-score += 2 is the same as score = score + 2
+score += 2 is the same as score = score + 2 // for strings, operator will append
 == // comparison operator
 != // not equal comparison operator
 %  // remainder operator - 5 % 2 evaluates to 1
@@ -81,34 +221,25 @@ special characters
 ------------------
 
 
-methods - method is a function built in to each instance of a type
--------
-hasPrefix() // does a string begin with another string?
-func hasPrefix(_ prefix: String) -> Bool
-let introduction = "It was a dark and stormy night"
-introduction.hasPrefix("It was") // will resolve to true
-
-lowercased() // change string to all lower-case
-let question = "UPPERCASE"
-let lowerQuestion = question.lowercased()
-
-removeAll()
-var magic = "Now you see it"
-magic.removeAll() // the string "magic" is now empty, null value
-
-count
-"abcd".count // resolves to 4
-
-
-properties - property is a constant or variable built in to each instance of a type, can't pass arguments to a property
-----------
-var isEmpty: Bool { get } // declare property; note "{ get }" means you can get the value but not set it
-let something = "It was the best of times"
-something.isEmpty // resolves to false
-
-
 Xcode
 -----
 Option-<click> on a variable, type, method or property to pull up documentation
+Option-<click> on file will pull up Assistant Editor; Command-<enter> to remove
+Command + number will cycle through navigator icons
+Command-<0> Command-Option-<0> toggle on/off left and right panes
+Highlight code segment and Control-<i> to autofix indenting
+Command-<+> Command-<-> to adjust code window font size
+Command and hover over bracket will show you begin/end
+Highlight section of code, Command-</> to comment out, toggle switch
+Command-Shift-<o> for quick navigation
+Command-Contol-<e> to edit within scope only
 View > Utilities > Show Quick Help Inspector from the menu
 Window > “Documentation and API Reference”
+Connectiions: Outlets - connect varaibles in code to objects on storyboard
+                        ("@IBOutlet weak" will appear in code which tells Xcode
+                        the property is an Outlet; "UIView!" - UIView is the basic
+                        view type used in all iOS apps; "!" means if the outlet is not
+                        connected and you try to use it, your application will crash)
+              Actions - connect controls (switches, buttons, etc.) to methods in code
+                        (tapping a button runs method)
+viewDidLoad function is called when your view controller is ready to appear on the screen 
