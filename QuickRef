@@ -8,12 +8,24 @@ Variables: var
 
 Types
 -----
-String; Int; Double; Bool
+String; Int; Float; Double; Bool
+Tupals: let coodinates: (Int, Int) = (2, 3) or let coordinates: = (2, 3)
+   to reference a tupal: let x1 = coordinates.0; let x2 = coordinates.1
+   tupals can be of mixed type
+   naming tupals: let coordinates = (x: 1, y: 2); let xValue = coordinates.x
+   let coordinates3D = (x: 2, y: 3, z: 1)
+   let (x3, y3, z3) = coordinates3D // 3 new variables created and values from above assigned
+   let (x4, y4, _) = coordinates3D // saying you don't care about the 3rd value
 Date() (let today=Date() - part of framework Foundation so must "import Foundation")
        Date() is known as an initializer - you use an initializer to create a new instance
        of a particular type - every type as at least one initializer
 Every type has an API.
-
+currentValue = Int(slider.value) // slider.value is of type Float; this statement converts
+                                 // the Float value to integer which is the Type of
+                                 // currentValue
+slider.value = Float(currentValue) // convert Int to Float
+targetLabel.text = String(targetValue) // Int to String
+  
 
 Type Annotation (for when you don't want to rely on type inference)
 ---------------
@@ -29,7 +41,7 @@ Type Inference
 - decimal numbers are typed as Double
 
 
-functions
+functions (are called methods when they belong to a class/object)
 ---------
 declaration:  func hello(name: String) { } // "name" is called a parameter name
 	      func hello(firstName: String, lastName: String) { }
@@ -37,9 +49,12 @@ declaration:  func hello(name: String) { } // "name" is called a parameter name
 
 calls:  hello(name: "Maria") // "name" in this function call is called argument label
 	hello(firstName: "John", lastName: "Candy")
+        reciever.methodName(parameters) // format used when calling a method on an object
+                                        // "receiver" is who you're sending message to;
+        self.startNewRound()            // "self" is default receiver so usually not listed
 
 Parameter names must match the argument labels.  You can create multiple parameter names to
-make you code more readable (note the 2 parameter names in the function declaration):
+make your code more readable (note the 2 parameter names in the function declaration):
 
    func printHello(to name: String) {
 	print("Hello " + name)
@@ -52,7 +67,23 @@ without an argument label:
    func printHelloTo(_ name: String) {
 	print("Hello " + name)
    }
-   printHelloTo("Maya")
+   printHelloTo("Maya") // because of the _, you don't need to specify an argument label
+
+Function parameters can be assigned default values:
+
+   func printMultipleOf(number: Int, multiplier: Int = 1) { }
+
+When you call this function, only an argument for number is required; not passing in an 
+argument for multiplier will cause the function to use the default value.
+
+
+System Functions
+----------------
+viewDidLoad() // is called as soon as ViewController.swift loads its interface from 
+              // Main.storyboard
+myRandomNumber = Int.random(in: 1...100) // generate random # in inclusive range
+Int.max // largest possible integer
+stride(from:to:by:) / stride(from:through:by:) // step over values between two boundaries
 
 
 Initializers
@@ -65,8 +96,8 @@ let oneHourLater = Date(timeIntervalSinceNow: 3600) - value: a date that is the 
                                                              in the future from current time
 
 
-Instance Methods // method is a function built in to each instance of a type
-----------------
+Instance Methods // method is a function built in to each instance of a type; a function that belongs
+---------------- // to an object
 Instance Methods of functions cannot be called without an instance and cannot be used on an instance
 of the wrong type.
 
@@ -91,6 +122,14 @@ UISwitch:
 			colorView.backgroundColor = .black
 		}
    }
+
+UISlider:
+   @IBOutlet weak var slider: UISlider!
+   let roundedValue = slider.value.rounded() // value is slider's current value; rounded rounds current value
+
+UILabel:
+   @IBOutlet weak var targetLabel: UILabel!
+   targetLabel.text = String(targetValue) // text is string value of what's displayed in label
    
 
 Properties // property is a constant or variable built in to each instance of a type, can't pass arguments to a property
@@ -187,14 +226,86 @@ rectangle.biggerThan(otherRectangle) // value: false
 otherRectangle.biggerThan(rectangle) // value: true
 
 
+Built-In Functions
+------------------
+abs() // converts a value, if negative, to positive - in Foundation
+
+
 loops
 -----
-for...in
-let friends = ["Name", "Name2", "Name3", "Name4", "Name5"]
-for friend in friends {
-    print(friend)
+break - break out of loop
+continue - jump to next execution of loop
+
+for...in - for i in 1...10 {}; for _ in 1...10 {}
+           for i in 1..<5 {} will run from 1 to 4
+           for _ in 0...count where count > 100 {}
+           for song in songs {}
+           let friends = ["Name", "Name2", "Name3", "Name4", "Name5"]
+           for friend in friends {
+               print(friend)
+           }
+           print("Done, all friends have been printed.")
+
+           floors: for floor in 12...15 {
+              rooms: for room in 11...16 {
+                 if room == 13 {
+                    print("Not going to do room 13")
+                    continue floors
+                 }
+                 print("Clean room \(floor)\(room)")
+              }
+           }
+
+
+while - while <condition> { <loop code> }
+
+repeat - repeat { <loop code> } while <condition>
+
+let number = Int.max
+let numberDescription: String
+switch number {
+case 0:
+   numberDescription = "Zero"
+case 1...9:
+   numberDescription = "Between 1 and 9"
+case let negativeNumber where negativeNumber < 0
+   numberDescription = "Negative Number"
+case _ where number > .max / 2:
+   numberDescription = "Very Large"
+default:
+   numberDescroiption = "No Description"
 }
-print("Done, all friends have been printed.")
+
+switch number % 2 {
+case 0:
+   ...
+default:
+   ...
+}
+
+let animalString = "Elephant"
+let isHousePet: Bool
+switch animalString {
+case "Dog", "Cat", "Gerbil":
+   isHousePet = true
+default:
+   isHousePet = false
+}
+
+let coordinates = (0.0, 0.0) // implied type set to Double since deciml points were used
+let pointCategory: String
+switch coordinates {
+case (0,0): // can leave off the ".0" decimal portion since compiler already knows they are type Double
+   pointCategory = "Origin"
+case (let x, 0):
+   pointCategory = "On the x-axis at \(x)"
+case (0, let y):
+   pointCategory = "On the y-axis at \(y)"
+case let (x, y) where y == x * x"
+   pointCategory = "Along y = x ^ 2"
+case (x, y):
+   pointCategory = "No zero coordinates - x = \(x), y = \(y)"
+}
 
 
 comments
@@ -202,16 +313,30 @@ comments
 // A single line comment
 /* A multi-
    line comment */
+//: [Previous](@previous) - link comments, viewable when Playground is rendered
+//: [Next](@next)
 
 
-binary operators
-----------------
+unary operators
+---------------
+!
+
+
+binary (infix) operators
+------------------------
 +
+
+
+ternary operators
+-----------------
+? // condition - <condition> ? <true value> : <false value>
 
 
 special operators
 -----------------
 score += 2 is the same as score = score + 2 // for strings, operator will append
+score *= -1 is the same as score = score * -1
+score = -score is the same as above
 == // comparison operator
 != // not equal comparison operator
 %  // remainder operator - 5 % 2 evaluates to 1
@@ -221,10 +346,27 @@ special characters
 ------------------
 
 
+Closures
+--------
+In Swift, alerts are asynchrous - an alert is displayed by present() and code execution continues
+immediately with the next statement even though there may be an "OK" botton on the alert that the
+user must tap.
+
+let action = UIAlertAction(title: "OK", style: .default, handler: {
+			action in
+			self.startNewRound()
+		})
+
+To get around this, because you probably don't want your view to update until after the button is
+tapped, you use Closures - the "handler" in statement above.
+
 Xcode
 -----
+Editor -> Edit all in Scope // edit multiple at once
+Click on item on first line & Ctrl-Shift-Click on remaining lines // add text to multiple
 Option-<click> on a variable, type, method or property to pull up documentation
 Option-<click> on file will pull up Assistant Editor; Command-<enter> to remove
+Command-<b> to build project
 Command + number will cycle through navigator icons
 Command-<0> Command-Option-<0> toggle on/off left and right panes
 Highlight code segment and Control-<i> to autofix indenting
@@ -235,6 +377,12 @@ Command-Shift-<o> for quick navigation
 Command-Contol-<e> to edit within scope only
 View > Utilities > Show Quick Help Inspector from the menu
 Window > “Documentation and API Reference”
+View Controller's job is to manage a single screen in your app or part of a screen - for
+every screen there will be a View Controller. Each View Controller has a storyboard with
+associated code file.
+To display alert pop-up boxes, create UIAlertController and UIAlertAction for every button
+you want to add to the alert.
+The Class that controls a View Controller is the ViewController Class.
 Connectiions: Outlets - connect varaibles in code to objects on storyboard
                         ("@IBOutlet weak" will appear in code which tells Xcode
                         the property is an Outlet; "UIView!" - UIView is the basic
