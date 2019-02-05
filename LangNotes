@@ -167,11 +167,117 @@ arrays
 Once a mutable array is declared, it can only hold values of the types in the original declaration
 
 var list = [String]() // declare mutable empty array that will hold strings
+var results = [Int]()
+var results = Array<Int>()
 list.append("Banana") // add item to array
 
 var flavors = ["Chocolate", "Vanilla", "Strawberry", "Pistachio", "Rocky Road"]
 flavors[0] = "Fudge Ripple" // replace Chocolate with Fudge Ripple in array flavors, you can't add or remove
                             // elements from an array using subscripts
+
+
+sets
+----
+Sets are collections of values just like arrays, except they have two differences:
+1. Items aren’t stored in any order and Swift makes no guarantees about its order
+2. No item can appear twice in a set; all items must be unique
+
+You can create sets directly from arrays, like this:
+
+   let colors = Set(["red", "green", "blue"])
+
+Because they are unordered, you can’t read values from a set using numerical positions like you can with arrays.
+
+If you try to insert a duplicate item into a set, the duplicates get ignored. For example:
+
+   let colors2 = Set(["red", "green", "blue", "red", "blue"])
+
+The final colors2 set will still only include red, green, and blue once.
+
+Declare empty set:
+
+   var words = Set<String>()
+   var numbers = Set<Int>()
+
+
+tuples
+------
+Tuples allow you store several values together in a single value. That might sound like arrays, but tuples are different:
+
+- You can’t add or remove items from a tuple; they are fixed in size
+- You can’t change the type of items in a tuple; they always have the same types they were created with
+- You can access items in a tuple using numerical positions or by naming them, but Swift won’t let you read numbers or
+  names that don’t exist
+
+Tuples are created by placing multiple items into parentheses, like this:
+
+   var name = (first: "Taylor", last: "Swift")
+
+You then access items using numerical positions starting from 0:
+
+   name.0
+
+Or you can access items using their names:
+
+   name.first
+
+You can change the values inside a tuple after you create it, but not the types of values
+
+
+dictionaries
+------------
+Collections of values just like arrays, but rather than storing things with an integer position you can access them
+using anything you want.
+
+The most common way of storing dictionary data is using strings. For example, we could create a dictionary that
+stores the height of singers using their name:
+
+   let heights = [
+       "Taylor Swift": 1.78,
+       "Ed Sheeran": 1.73
+   ]
+
+Just like arrays, dictionaries start and end with brackets and each item is separated with a comma. However, we
+also use a colon to separate the value you want to store (e.g. 1.78) from the identifier you want to store it under
+(e.g. “Taylor Swift”).
+
+These identifiers are called keys, and you can use them to read data back out of the dictionary:
+
+   heights["Taylor Swift"]
+
+Note: When using type annotations, dictionaries are written in brackets with a colon between your identifier and
+value types. For example, [String: Double] and [String: String].
+
+If you try to read a value from a dictionary using a key that doesn’t exist, Swift will send you back nil. While
+this might be what you want, there’s an alternative: we can provide the dictionary with a default value to use if we
+request a missing key.
+
+To demonstrate this, let’s create a dictionary of favorite ice creams for two people:
+
+   let favoriteIceCream = [
+       "Paul": "Chocolate",
+       "Sophie": "Vanilla"
+   ]
+
+We can read Paul’s favorite ice cream like this:
+
+   favoriteIceCream["Paul"]
+
+But if we tried reading the favorite ice cream for Charlotte, we’d get back nil, meaning that Swift doesn’t have a
+value for that key:
+
+   favoriteIceCream["Charlotte"]
+
+We can fix this by giving the dictionary a default value of “Unknown”, so that when no ice cream is found for
+Charlotte we get back “Unknown” rather than nil:
+
+   favoriteIceCream["Charlotte", default: "Unknown"]
+
+Declaring an empty dictionary:
+
+   var scores = Dictionary<String, Int>()
+   var teams = [String: String]()
+   teams["Paul"] = "Red" # add entry
 
 
 struct
@@ -359,6 +465,7 @@ let action = UIAlertAction(title: "OK", style: .default, handler: {
 
 To get around this, because you probably don't want your view to update until after the button is
 tapped, you use Closures - the "handler" in statement above.
+
 
 Xcode
 -----
