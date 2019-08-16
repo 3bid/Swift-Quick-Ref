@@ -6,16 +6,9 @@ Variables: var
            var someThing = 0 //value of someThing may be changed, is "mutable"
 
 
-Types
------
-String; Int; Float; Double; Bool
-Tupals: let coodinates: (Int, Int) = (2, 3) or let coordinates: = (2, 3)
-   to reference a tupal: let x1 = coordinates.0; let x2 = coordinates.1
-   tupals can be of mixed type
-   naming tupals: let coordinates = (x: 1, y: 2); let xValue = coordinates.x
-   let coordinates3D = (x: 2, y: 3, z: 1)
-   let (x3, y3, z3) = coordinates3D // 3 new variables created and values from above assigned
-   let (x4, y4, _) = coordinates3D // saying you don't care about the 3rd value
+Data Types
+----------
+String; Int; Float; Double; Bool // Double has higher level of accuracy than Float
 Date() (let today=Date() - part of framework Foundation so must "import Foundation")
        Date() is known as an initializer - you use an initializer to create a new instance
        of a particular type - every type as at least one initializer
@@ -29,8 +22,9 @@ targetLabel.text = String(targetValue) // Int to String
 
 Type Annotation (for when you don't want to rely on type inference)
 ---------------
-var welcomeMessage: String
+var welcomeMessage: String // space before ":" won't generate error but avoid doing this
 var aVariable, bVariable, cVariable: String
+var welcomeMessage: String = "Welcome!!!"
 let annotatedDouble: Double = 20
 
 
@@ -88,12 +82,12 @@ stride(from:to:by:) / stride(from:through:by:) // step over values between two b
 
 Initializers
 ------------
-let rightNow = Date() - value: current month, day, year, "at", time
-let emptyString = String() - value: ""
-let falseBool = Bool() - value: false
-let zero = Int() - value: 0
-let oneHourLater = Date(timeIntervalSinceNow: 3600) - value: a date that is the # of seconds
-                                                             in the future from current time
+let rightNow = Date() // value: current month, day, year, "at", time
+let emptyString = String() // value: ""
+let falseBool = Bool() // value: false
+let zero = Int() // value: 0
+let oneHourLater = Date(timeIntervalSinceNow: 3600) // value: a date that is the # of seconds
+                                                              in the future from current time
 
 
 Instance Methods // method is a function built in to each instance of a type; a function that belongs
@@ -157,16 +151,22 @@ Int:
    count // returns count of elements in array; this is a calculated property
 
 
-print
------
+string interpolation
+--------------------
 print("This is a \(testVariable)")
+print("Your age is \(age + 5)")
 
 
 arrays
 ------
 Once a mutable array is declared, it can only hold values of the types in the original declaration
 
-var list = [String]() // declare mutable empty array that will hold strings
+var list = [String]() or var list: [String] = [] // declare mutable empty array that will
+                                                 // hold strings - the array will be created
+
+var list: [String] // declare mutable array only, don't create it
+list[0] = "Shake it Off” // this line will generate error because you had told Swift to not create the array yet
+
 var results = [Int]()
 var results = Array<Int>()
 list.append("Banana") // add item to array
@@ -174,6 +174,10 @@ list.append("Banana") // add item to array
 var flavors = ["Chocolate", "Vanilla", "Strawberry", "Pistachio", "Rocky Road"]
 flavors[0] = "Fudge Ripple" // replace Chocolate with Fudge Ripple in array flavors, you can't add or remove
                             // elements from an array using subscripts
+
+var songs: [Any] // to declare an array of mixed types
+
+If you add ("+") 2 arrays, they will be combined.  Can also use "+=" on arrays.
 
 
 sets
@@ -222,6 +226,14 @@ Or you can access items using their names:
    name.first
 
 You can change the values inside a tuple after you create it, but not the types of values
+
+let coodinates: (Int, Int) = (2, 3) or let coordinates: = (2, 3)
+to reference a tupal: let x1 = coordinates.0; let x2 = coordinates.1
+tupals can be of mixed type
+naming tupals: let coordinates = (x: 1, y: 2); let xValue = coordinates.x
+let coordinates3D = (x: 2, y: 3, z: 1)
+let (x3, y3, z3) = coordinates3D // 3 new variables created and values from above assigned
+let (x4, y4, _) = coordinates3D // saying you don't care about the 3rd value
 
 
 dictionaries
@@ -278,6 +290,50 @@ Declaring an empty dictionary:
    var scores = Dictionary<String, Int>()
    var teams = [String: String]()
    teams["Paul"] = "Red" # add entry
+
+
+enums
+-----
+enum Result {
+   case success
+   case failure
+}
+let someresult = Result.success
+
+enums can also store associated values attached to each case:
+
+enum Activity {
+    case bored
+    case running(destination: String)
+    case talking(topic: String)
+    case singing(volume: Int)
+}
+
+Now you can be more precise: let talking = Activity.talking(topic: "football")
+
+Swift will assign enums a number beginning with 0:
+
+enum Planet: Int {
+    case mercury
+    case venus
+    case earth
+    case mars
+}
+
+In the above, mercury is assinged 0, venus 1, etc.
+
+let myearth = Planet(rawValue: 2)
+
+enum Planet: Int {
+    case mercury = 1
+    case venus
+    case earth
+    case mars
+}
+
+The above will force Swift to start with 1 instead of 0 and increment from there. So now
+
+let myearth = Planet(rawValue: 3) refers to earth.
 
 
 struct
@@ -342,7 +398,7 @@ loops
 break - break out of loop
 continue - jump to next execution of loop
 
-for...in - for i in 1...10 {}; for _ in 1...10 {}
+for...in - for i in 1...10 {}; for _ in 1...10 {} // use "_" when you don't nned to know what number you're on
            for i in 1..<5 {} will run from 1 to 4
            for _ in 0...count where count > 100 {}
            for song in songs {}
@@ -361,7 +417,11 @@ for...in - for i in 1...10 {}; for _ in 1...10 {}
                  print("Clean room \(floor)\(room)")
               }
            }
-
+	   var people = ["players", "haters", "heart-breakers", "fakers"]
+	   var actions = ["play", "hate", "break", "fake"]
+	   for i in 0 ..< people.count {
+	      print("\(people[i]) gonna \(actions[i])")
+	   }
 
 while - while <condition> { <loop code> }
 
@@ -441,11 +501,15 @@ ternary operators
 special operators
 -----------------
 score += 2 is the same as score = score + 2 // for strings, operator will append
+score -= 2 is the same as score = score - 2
 score *= -1 is the same as score = score * -1
 score = -score is the same as above
 == // comparison operator
+! // not operator
 != // not equal comparison operator
-%  // remainder operator - 5 % 2 evaluates to 1
+%  // modulus/remainder operator - 5 % 2 evaluates to 1
+... // Closed Range Operator - used in for loops
+..< // Half Open Range Operator - used in for loops
 
 
 special characters
