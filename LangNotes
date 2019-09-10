@@ -18,7 +18,28 @@ currentValue = Int(slider.value) // slider.value is of type Float; this statemen
                                  // currentValue
 slider.value = Float(currentValue) // convert Int to Float
 targetLabel.text = String(targetValue) // Int to String
+FileManager.default // a data type that lets us work with the filesystem
+Bundle.main.resourcePath // Bundle: representation of the code and resources stored in a bundle
+			 // directory on disk - directory containing program and all assets;
+			 // main: returns the bundle object that contains the
+			 // current executable; resourcePath: full pathname of the bundle’s
+			 // subdirectory containing resources
   
+
+System Functions & Keywords
+---------------------------
+viewDidLoad() // is called as soon as ViewController.swift loads its interface from 
+              // Main.storyboard, when the screen has loaded and ready for you to customize
+myRandomNumber = Int.random(in: 1...100) // generate random # in inclusive range
+Int.max // largest possible integer
+stride(from:to:by:) / stride(from:through:by:) // step over values between two boundaries
+override // means "I know this method was implemented by my parent class, but I want to change
+	 // it for this subclass." Having the override keyword is helpful, because it makes your intent
+	 // clear. It also allows Swift to check your code: if you don't use override Swift won't let you
+	 // change a method you got from your superclass, or if you use override and there wasn't anything
+	 // to override, Swift will point out your error
+super // calls superclass method and after it finishes executing, runs local method of the same name
+
 
 Type Annotation (for when you don't want to rely on type inference)
 ---------------
@@ -55,6 +76,11 @@ make your code more readable (note the 2 parameter names in the function declara
    }
    printHello(to: "Chris")
 
+   func countLettersInString(myString str: String) {
+        print("The string \(str) has \(str.count) letters.")
+    }
+    countLettersInString(myString: "Hello")
+
 Underscore instead of argument label in function declaration allows you to call function
 without an argument label:
 
@@ -63,6 +89,17 @@ without an argument label:
    }
    printHelloTo("Maya") // because of the _, you don't need to specify an argument label
 
+   func countLettersInString(_ str: String) {
+        print("The string \(str) has \(str.count) letters.")
+   }
+   countLettersInString("Hello")
+
+   // This form is better than the above
+   func countLetters(in string: String) {
+        print("The string \(string) has \(string.count) letters.")
+   }
+   countLetters(in: "Hello")
+
 Function parameters can be assigned default values:
 
    func printMultipleOf(number: Int, multiplier: Int = 1) { }
@@ -70,14 +107,27 @@ Function parameters can be assigned default values:
 When you call this function, only an argument for number is required; not passing in an 
 argument for multiplier will cause the function to use the default value.
 
+Function return values:
 
-System Functions
-----------------
-viewDidLoad() // is called as soon as ViewController.swift loads its interface from 
-              // Main.storyboard
-myRandomNumber = Int.random(in: 1...100) // generate random # in inclusive range
-Int.max // largest possible integer
-stride(from:to:by:) / stride(from:through:by:) // step over values between two boundaries
+   func albumIsTaylor(name: String) -> Bool {
+       if name == "Taylor Swift" { return true }
+       if name == "Fearless" { return true }
+       if name == "Speak Now" { return true }
+       if name == "Red" { return true }
+       if name == "1989" { return true }
+
+       return false
+   }
+   if albumIsTaylor(name: "Red") {
+       print("That's one of hers!")
+   } else {
+       print("Who made that?!")
+   }
+   if albumIsTaylor(name: "Blue") {
+       print("That's one of hers!")
+   } else {
+       print("Who made that?!")
+   }
 
 
 Initializers
@@ -146,6 +196,8 @@ String:
    numbers.removeLast()
    numbers.removeAll()
    contains // does the string exist within another string; must import Foundation framework
+   uppercased // convert all letters to uppercase
+
 
 Int:
    count // returns count of elements in array; this is a calculated property
@@ -338,12 +390,18 @@ let myearth = Planet(rawValue: 3) refers to earth.
 
 struct
 ------
+structs are complex data types (have multiple values).  You then create an instance of a struct and
+fill in its values - you then pass this struct, with its multiple values, around in your code as a
+single value.  A struct is a value type.
+
 struct Song {
     let title: String
     let artist: String
     let duration: Int
 }
 let song = Song(title: "No, no, no", artist: "Fizz", duration: 150) // song is an instance of Song
+                                                                    // this is called a memberwise
+                                                                    // initializer
 song.title
 song.artist
 song.duration
@@ -386,6 +444,40 @@ let rectangle = Rectangle(width: 10, height: 10)
 let otherRectangle = Rectangle(width: 10, height: 20)
 rectangle.biggerThan(otherRectangle) // value: false
 otherRectangle.biggerThan(rectangle) // value: true
+
+A function inside a struct is called a method.
+
+
+Classes
+-------
+class Singer {
+    var name: String
+    var age: Int
+
+    init(name: String, age: Int) { // "init" is a special method
+        self.name = name // use "self" because parameter names being passed in are the same as
+			 // the names of the properties we want to assign, i.e., the name
+			 // property of this object should be set to the name parameter that
+			 // was passed in; you wouldn't need self if you did "var xxx = name"
+        self.age = age
+    } // *** Swift requires all non-optional properties have a value by the end of the initializer
+      //     or by the time the initializer calls any other method, whichever comes first
+
+    func sing() {
+        print("La la la la")
+    }
+}
+
+Another complex data type like structs but differences are:
+1. no memberwise initializers - you have to write your own - see init above - the non-optimal
+   options to writing an initializer are: i) make the 2 values optional strings (but this introduces
+   optionals in your code where they don't need to be), ii) assign two values a default value
+   (sub-optimal if default values are never used)
+2. can define a class as being based off another class but adding any new things you want
+3. when you create an instance of a class, it's called an object; if you copy that object,
+   both copies point at the same data by default - change one and the other changes too
+4. is a reference type - passing a class object around program is actually passing a reference
+   to the object
 
 
 Built-In Functions
@@ -508,8 +600,9 @@ score = -score is the same as above
 ! // not operator
 != // not equal comparison operator
 %  // modulus/remainder operator - 5 % 2 evaluates to 1
-... // Closed Range Operator - used in for loops
-..< // Half Open Range Operator - used in for loops
+... // Closed Range Operator - used in for loops & case statements
+..< // Half Open Range Operator - used in for loops & case statements
+?? // nil coalescing operator
 
 
 special characters
@@ -561,4 +654,3 @@ Connectiions: Outlets - connect varaibles in code to objects on storyboard
                         connected and you try to use it, your application will crash)
               Actions - connect controls (switches, buttons, etc.) to methods in code
                         (tapping a button runs method)
-viewDidLoad function is called when your view controller is ready to appear on the screen 
