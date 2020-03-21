@@ -26,13 +26,17 @@ Bundle.main.resourcePath // Bundle: representation of the code and resources sto
 			 // subdirectory containing resources
   
 
-System Functions & Keywords
----------------------------
+System Methods & Keywords
+-------------------------
 viewDidLoad() // is called as soon as ViewController.swift loads its interface from 
               // Main.storyboard, when the screen has loaded and ready for you to customize
+tableView // UITableViewController class method; tells the data source to return the number of rows
+	  // in a given section of a table view; reports zero rows in table by default
 myRandomNumber = Int.random(in: 1...100) // generate random # in inclusive range
 Int.max // largest possible integer
 stride(from:to:by:) / stride(from:through:by:) // step over values between two boundaries
+stride(from: 10, to: 0, by: -2)
+stride(from:through:by:) // overload function with different output
 override // means "I know this method was implemented by my parent class, but I want to change
 	 // it for this subclass." Having the override keyword is helpful, because it makes your intent
 	 // clear. It also allows Swift to check your code: if you don't use override Swift won't let you
@@ -130,6 +134,45 @@ Function return values:
    }
 
 
+Overload function rules:
+   Valid overloads must have at leeast one of these differences:
+      1. different number of parameters
+      2. different parameter types
+      3. different argument labels
+      4. different return types
+
+   Guidelines:
+      1. overloads should be related and have similar functionality
+      2. instead of using overloads, prefer to use a single function but with default values
+      3. overloads that differ only in retun types - you will lose type inference and so will
+         be forced to explicitly declare type - not recommended to be used
+
+Variadic parameters in functions allow you to specify passing of 0 or more parameters (like print()).
+Insice the function, the variadic parameter list is an array.  You cannot pass in an array instead of
+a list of parameters.
+
+When you pass a value into a function, it creates a copy of it and that local copy is by default a
+constant - it cannot be changed within the function.  You can override this by the use of "inout".
+
+This is illegal:
+
+   func incrementAndPrint(_ value: Int) {
+	   value += 1
+	   print(value)
+   }
+
+You can make the above work by doing this:
+
+   func incrementAndPrint(_ value: inout Int) {
+	   value += 1
+	   print(value)
+   }
+
+   incrementAndPrint(&count) // note the required "&" for inout functions
+
+Don't forget that now when the function returns, the value of the value paramether has been changed.
+
+
 Initializers
 ------------
 let rightNow = Date() // value: current month, day, year, "at", time
@@ -207,6 +250,20 @@ string interpolation
 --------------------
 print("This is a \(testVariable)")
 print("Your age is \(age + 5)")
+
+
+Complex Types
+-------------
+1. Arrays, sets, tuples, and dictionaries let you store a group of items under a single value. They each do
+   this in different ways, so which you use depends on the behavior you want.
+2. Arrays store items in the order you add them, and you access them using numerical positions.
+3. Sets store items without any order, so you can’t access them using numerical positions.
+4. Tuples are fixed in size, and you can attach names to each of their items. You can read items using numerical
+   positions or using your names.
+5. Dictionaries store items according to a key, and you can read items using those keys.
+6. Enums are a way of grouping related values so you can use them without spelling mistakes.
+   You can attach raw values to enums so they can be created from integers or strings, or you can add associated
+   values to store additional information about each case.
 
 
 arrays
@@ -623,9 +680,113 @@ let action = UIAlertAction(title: "OK", style: .default, handler: {
 To get around this, because you probably don't want your view to update until after the button is
 tapped, you use Closures - the "handler" in statement above.
 
+Properties of Closures:
+ 1.  functions assigned to a variable, function called using that variable, and even passed into other
+     functions as parameters
+
+	let driving = {
+           print("I'm driving in my car") // function assigned to driving
+	}
+	driving() // call function
+
+ 2.  Closures can also accept parameters
+
+	let driving = { (place: String) in // "in" tells Swift the main body of the Closure is starting
+	   print("I'm going to \(place) in my car")
+	}
+	driving("London")
+
+ 3.  you don't use parameter labels when calling closures
+ 4.  Closures can return values
+
+	let drivingWithReturn = { (place: String) -> String in
+	   return "I'm going to \(place) in my car"
+	}
+	let message = drivingWithReturn("London")
+	print(message)
+
+5.  Passing closure into function
+
+	let driving = {
+	   print("I'm driving in my car")
+	}
+	func travel(action: () -> Void) {
+	   print("I'm getting ready to go.")
+	   action()
+	   print("I arrived!")
+	}
+	travel(action: driving)
+
+6.  Trailing Closures Syntax - when the last parameter to a function is a closure
+
+	Using the above function, since the last parameter is a closure, you can simplify call to:
+
+	travel() { // don't need to define a driving variable, pass it in directly
+	   print("I'm driving in my car")
+	}
+
+	Because there aren't any other parameters, you can eliminate the parens entirely:
+
+	travel {
+	   print("I'm driving in my car")
+	}
+
+7.  A closure you pass into a function can also accept its own parameters
+
+	Function that accepts a closure as its only parameter, and that closure in turn accepts a string:
+
+	func travel(action: (String) -> Void) {
+	   print("I'm getting ready to go.")
+	   action("London")
+	print("I arrived!")
+	}
+
+	Call travel using trailing closure syntax:
+
+	travel { (place: String) in
+	   print("I'm going to \(place) in my car")
+	}
+
+
 
 Xcode
 -----
+View -> Libraries -> Show Library // show object library
+Cmd-Shift-L // show object library
+Alt-Cmd-Shift-L // show object library in floating window
+
+View -> Utilities -> Show Identity Inspector
+Alt-Cmd-3 // activate identity inspector
+
+Command-Option-Enter // open an assistant editor toggle
+Command-Ctrl-t // open editor side by side; will keep adding more editors
+Command-Option-Ctrl-t // open editor below current
+Command-j // followed by arrow keys to cycle through open editors
+Command-Option-Ctrl-w // close editor
+
+Shift-Ctrl and click in multiple lines // multi-line edits
+Option and drag // contiguous multi-line edits
+Shift-Ctrl-up/down arrow // same as above but don't need to use the mouse
+
+Ctrl-Space // Code Completion dropdown toggle
+
+Option-Command-Right/Left Square Bracket // move entire line up or down
+
+Cmd-/ // comment line or selection toggle
+
+Ctrl-i // balance indentation of line or selection
+
+Ctrl-Cmd-Right/Left arrow keys // forward or rewind to previously visited Xcode files
+Ctrl-Cmd-J or Click // jump to definition
+Shift-Ctrl-Cmd-f // find selected symbol in workspace
+Shift-Ctrl-Cmd-h // same as above but focus is on methods
+Shift-Cmd-o // jump to any source location in project
+Cmd-l // jump to specific line
+Ctrl-6 // drop down menu of symbols
+Cmd-hover over minimap // same as above
+
+
+Command-t // open new tab
 Editor -> Edit all in Scope // edit multiple at once
 Click on item on first line & Ctrl-Shift-Click on remaining lines // add text to multiple
 Option-<click> on a variable, type, method or property to pull up documentation
