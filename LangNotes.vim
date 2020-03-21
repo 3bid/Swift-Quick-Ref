@@ -660,6 +660,7 @@ score = -score is the same as above
 ... // Closed Range Operator - used in for loops & case statements
 ..< // Half Open Range Operator - used in for loops & case statements
 ?? // nil coalescing operator
+betterStudent = samGrade > chrisGrade ? "Sam" : "Chris" // Ternary Conditional Operator
 
 
 special characters
