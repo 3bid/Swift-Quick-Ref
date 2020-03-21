@@ -219,6 +219,88 @@ UILabel:
    targetLabel.text = String(targetValue) // text is string value of what's displayed in label
    
 
+Closures
+--------
+In Swift, alerts are asynchrous - an alert is displayed by present() and code execution continues
+immediately with the next statement even though there may be an "OK" botton on the alert that the
+user must tap.
+
+let action = UIAlertAction(title: "OK", style: .default, handler: {
+			action in
+			self.startNewRound()
+		})
+
+To get around this, because you probably don't want your view to update until after the button is
+tapped, you use Closures - the "handler" in statement above.
+
+Properties of Closures:
+ 1.  functions assigned to a variable, function called using that variable, and even passed into other
+     functions as parameters
+
+	let driving = {
+           print("I'm driving in my car") // function assigned to driving
+	}
+	driving() // call function
+
+ 2.  Closures can also accept parameters
+
+	let driving = { (place: String) in // "in" tells Swift the main body of the Closure is starting
+	   print("I'm going to \(place) in my car")
+	}
+	driving("London")
+
+ 3.  you don't use parameter labels when calling closures
+ 4.  Closures can return values
+
+	let drivingWithReturn = { (place: String) -> String in
+	   return "I'm going to \(place) in my car"
+	}
+	let message = drivingWithReturn("London")
+	print(message)
+
+5.  Passing closure into function
+
+	let driving = {
+	   print("I'm driving in my car")
+	}
+	func travel(action: () -> Void) {
+	   print("I'm getting ready to go.")
+	   action()
+	   print("I arrived!")
+	}
+	travel(action: driving)
+
+6.  Trailing Closures Syntax - when the last parameter to a function is a closure
+
+	Using the above function, since the last parameter is a closure, you can simplify call to:
+
+	travel() { // don't need to define a driving variable, pass it in directly
+	   print("I'm driving in my car")
+	}
+
+	Because there aren't any other parameters, you can eliminate the parens entirely:
+
+	travel {
+	   print("I'm driving in my car")
+	}
+
+7.  A closure you pass into a function can also accept its own parameters
+
+	Function that accepts a closure as its only parameter, and that closure in turn accepts a string:
+
+	func travel(action: (String) -> Void) {
+	   print("I'm getting ready to go.")
+	   action("London")
+	print("I arrived!")
+	}
+
+	Call travel using trailing closure syntax:
+
+	travel { (place: String) in
+	   print("I'm going to \(place) in my car")
+	}
+
+
 Properties // property is a constant or variable built in to each instance of a type, can't pass arguments to a property
 ----------
 Each instance of a variable has information associated with it, known as a property. Cannot be used
@@ -665,89 +747,6 @@ betterStudent = samGrade > chrisGrade ? "Sam" : "Chris" // Ternary Conditional O
 
 special characters
 ------------------
-
-
-Closures
---------
-In Swift, alerts are asynchrous - an alert is displayed by present() and code execution continues
-immediately with the next statement even though there may be an "OK" botton on the alert that the
-user must tap.
-
-let action = UIAlertAction(title: "OK", style: .default, handler: {
-			action in
-			self.startNewRound()
-		})
-
-To get around this, because you probably don't want your view to update until after the button is
-tapped, you use Closures - the "handler" in statement above.
-
-Properties of Closures:
- 1.  functions assigned to a variable, function called using that variable, and even passed into other
-     functions as parameters
-
-	let driving = {
-           print("I'm driving in my car") // function assigned to driving
-	}
-	driving() // call function
-
- 2.  Closures can also accept parameters
-
-	let driving = { (place: String) in // "in" tells Swift the main body of the Closure is starting
-	   print("I'm going to \(place) in my car")
-	}
-	driving("London")
-
- 3.  you don't use parameter labels when calling closures
- 4.  Closures can return values
-
-	let drivingWithReturn = { (place: String) -> String in
-	   return "I'm going to \(place) in my car"
-	}
-	let message = drivingWithReturn("London")
-	print(message)
-
-5.  Passing closure into function
-
-	let driving = {
-	   print("I'm driving in my car")
-	}
-	func travel(action: () -> Void) {
-	   print("I'm getting ready to go.")
-	   action()
-	   print("I arrived!")
-	}
-	travel(action: driving)
-
-6.  Trailing Closures Syntax - when the last parameter to a function is a closure
-
-	Using the above function, since the last parameter is a closure, you can simplify call to:
-
-	travel() { // don't need to define a driving variable, pass it in directly
-	   print("I'm driving in my car")
-	}
-
-	Because there aren't any other parameters, you can eliminate the parens entirely:
-
-	travel {
-	   print("I'm driving in my car")
-	}
-
-7.  A closure you pass into a function can also accept its own parameters
-
-	Function that accepts a closure as its only parameter, and that closure in turn accepts a string:
-
-	func travel(action: (String) -> Void) {
-	   print("I'm getting ready to go.")
-	   action("London")
-	print("I arrived!")
-	}
-
-	Call travel using trailing closure syntax:
-
-	travel { (place: String) in
-	   print("I'm going to \(place) in my car")
-	}
-
 
 
 Xcode
