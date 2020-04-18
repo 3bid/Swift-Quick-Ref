@@ -49,7 +49,9 @@ Bundle - a representation of the code and resources stored in a bundle directory
 		// symlinks; does a shallow search of the directory so does not traverse
 		// symlinks or display contents of any dirs; will return files beginning
 		// with ., i.e., .viminfo, but does not return "." or ".." or resource
-		// forks (files beginning with ._)
+		// forks (files beginning with ._); the order of the files in the returned
+		// array is undefined
+		//
 		// contentsOfDirectory is a throwing function so we must use "try":
 		//
 		//	func contentsOfDirectory(atPath path: String) throws -> [String]
