@@ -72,7 +72,7 @@ calls:  hello(name: "Maria") // "name" in this function call is called argument 
                                         // "receiver" is who you're sending message to;
         self.startNewRound()            // "self" is default receiver so usually not listed
 
-Parameter names must match the argument labels.  You can create multiple parameter names to
+Parameter names must match the argument labels. You can create multiple parameter names to
 make your code more readable (note the 2 parameter names in the function declaration):
 
    func printHello(to name: String) {
@@ -222,7 +222,7 @@ UILabel:
 Closures
 --------
 In Swift, alerts are asynchrous - an alert is displayed by present() and code execution continues
-immediately with the next statement even though there may be an "OK" botton on the alert that the
+immediately with the next statement even though there may be an "OK" button on the alert that the
 user must tap.
 
 let action = UIAlertAction(title: "OK", style: .default, handler: {
@@ -250,7 +250,20 @@ Properties of Closures:
 	driving("London")
 
  3.  you don't use parameter labels when calling closures
+
  4.  Closures can return values
+ 
+ 	The closure in #1 above is actually this if written out explicitly:
+
+	let driving:() -> () = {
+	   print("I'm driving in my car")
+	}
+
+	or:
+
+	let driving:() -> Void = {
+	   print("I'm driving in my car")
+	}
 
 	let drivingWithReturn = { (place: String) -> String in
 	   return "I'm going to \(place) in my car"
@@ -328,10 +341,36 @@ Int:
    count // returns count of elements in array; this is a calculated property
 
 
-string interpolation
---------------------
+string operations
+-----------------
 print("This is a \(testVariable)")
 print("Your age is \(age + 5)")
+
+let cafe1 = "Cafe\u{301}" // Unicode scalar value "\u{301}" modifies the preceding character to include an accent,
+			     so "e\u{301}" has the same canonical representation as the single Unicode scalar value "é"
+
+let name = "Marie Curie"
+let firstSpace = name.firstIndex(of: " ") ?? name.endIndex
+let firstName = name[..<firstSpace]
+print("\(name)'s first name has \(firstName.count) letters.")
+
+let cafe = "Cafe\u{301} du 🌍"
+print(cafe)
+// Prints "Café du 🌍"
+print(cafe.count)
+// Prints "9"
+print(Array(cafe))
+// Prints "["C", "a", "f", "é", " ", "d", "u", " ", "🌍"]"
+print(cafe.unicodeScalars.count)
+// Prints "10"
+print(Array(cafe.unicodeScalars))
+// Prints "["C", "a", "f", "e", "\u{0301}", " ", "d", "u", " ", "\u{0001F30D}"]"
+print(cafe.unicodeScalars.map { $0.value })
+// Prints "[67, 97, 102, 101, 769, 32, 100, 117, 32, 127757]"
+print(cafe.utf16.count)
+// Prints "11"
+print(Array(cafe.utf16))
+// Prints "[67, 97, 102, 101, 769, 32, 100, 117, 32, 55356, 57101]"
 
 
 Complex Types
